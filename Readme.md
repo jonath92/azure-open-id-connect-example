@@ -43,3 +43,6 @@ Go to the Example Workflow in the gui and trigger the workflow. It should fail. 
 # Resources
 - [GitHub Permission Setting with OpenId Connect](https://docs.github.com/en/actions/deployment/security-hardening-your-deployments/configuring-openid-connect-in-azure#adding-permissions-settings)
 - [Configure a user-assigned managed identity to trust an external identity provider](https://learn.microsoft.com/en-us/entra/workload-id/workload-identity-federation-create-trust-user-assigned-managed-identity?pivots=identity-wif-mi-methods-azp)
+
+# Limits
+- Azure Federated credentials don't support wildcards, see: https://github.com/Azure/azure-workload-identity/issues/373. 
