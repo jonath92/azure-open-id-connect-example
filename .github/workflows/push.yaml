@@ -1,37 +1,38 @@
 on:
-    push:
-      branches: 
-      - main 
-      tags:
-      - '*'
+  push:
+    branches:
+      - main
+    tags:
+      - "*"
 
 permissions:
-    id-token: write
-    contents: read
+  id-token: write
+  contents: read
 
 name: Linux_Container_Workflow
 
 jobs:
-    build-and-deploy:
-        runs-on: ubuntu-latest
-        steps:
-        - name: 'Checkout GitHub Action'
-          uses: actions/checkout@main
-          
-        - name: 'Login via Azure CLI'
-          uses: azure/login@v1
-          with:
-            client-id: ${{ secrets.AZURE_CLIENT_ID }}
-            tenant-id: ${{ secrets.AZURE_TENANT_ID }}
-            subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: "Checkout GitHub Action"
+        uses: actions/checkout@main
 
-        - name: 'Login to Docker Registry'
-          uses: azure/docker-login@v1
-          with:
-            login-server: ${{ secrets.REGISTRY_LOGIN_SERVER }}
+      - name: "Login via Azure CLI"
+        uses: azure/login@v1
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
 
-        - name: 'Build and Push Docker Image'
-          run: |
-            docker build . -t ${{ secrets.REGISTRY_LOGIN_SERVER }}/myapp:${{ github.ref }}
-            docker push ${{ secrets.REGISTRY_LOGIN_SERVER }}/myapp:${{ github.ref }}
-            
+      - name: "Login to Docker Registry"
+        uses: azure/cli@v2
+        with:
+          azcliversion: 2.30.0
+          inlineScript: |
+            az acr login --name githubActionsExampleRegistry
+
+      - name: "Build and Push Docker Image"
+        run: |
+          docker build . -t ${{ secrets.REGISTRY_LOGIN_SERVER }}/myapp:${{ github.ref }}
+          docker push ${{ secrets.REGISTRY_LOGIN_SERVER }}/myapp:${{ github.ref }}
