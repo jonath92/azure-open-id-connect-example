@@ -4,6 +4,7 @@ on:
       - main
     tags:
       - "*"
+  workflow_dispatch: 
 
 permissions:
   id-token: write
@@ -26,7 +27,7 @@ jobs:
           subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
 
       - name: Login to ACR via OIDC
-        run: az acr login --name githubActionsExampleRegistry
+        run: az acr login --name ${{ secrets.REGISTRY_NAME }}
 
       - name: "Build and Push Docker Image"
         run: |
