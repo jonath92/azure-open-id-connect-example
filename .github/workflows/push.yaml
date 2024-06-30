@@ -25,12 +25,8 @@ jobs:
           tenant-id: ${{ secrets.AZURE_TENANT_ID }}
           subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
 
-      - name: "Login to Docker Registry"
-        uses: azure/cli@v2
-        with:
-          azcliversion: 2.30.0
-          inlineScript: |
-            az acr login --name githubActionsExampleRegistry --expose-token
+      - name: Login to ACR via OIDC
+        run: az acr login --name githubActionsExampleRegistry
 
       - name: "Build and Push Docker Image"
         run: |
