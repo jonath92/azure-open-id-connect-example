@@ -3,6 +3,10 @@ on:
       tags:
       - '*'
 
+permissions:
+    id-token: write
+    contents: read
+
 name: Linux_Container_Workflow
 
 jobs:
